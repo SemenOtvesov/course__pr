@@ -1,0 +1,42 @@
+.table {
+  font-size: 20px;
+  overflow-x: auto;
+
+  &__fx-box {
+    display: flex;
+    width: 250vw;
+  }
+
+  &__fx-title {
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    text-align: center;
+    width: 30px;
+  }
+
+  &__fx-input {
+  }
+
+  &__row-box {
+    display: flex;
+    position: relative;
+    flex:  1 1 100%;
+    & > div{
+      border-left: 1px solid #000;
+      border-right: 1px solid #000;
+      display: flex; align-items: center; justify-content: center; 
+      padding: 5px;
+    }
+  }
+
+  &__row-title {
+    flex: 0 0 2.25%;
+  }
+
+  &__row-item {
+    flex: 0 0 2.25%;
+  }
+  & > div{
+    border: 1px solid #000;
+  }
+}

@@ -27,3 +27,14 @@ margin:0 auto;
 	max-width: none;
 }
 }
+
+.header{
+  position:fixed;
+  top: 0; left: 0;
+  width: 100%; height: 50px;
+  background-color: #fff;
+  display: flex; justify-content: center; align-items: center;
+  font-size: 25px;
+  font-weight: 700;
+  box-shadow: 2px 2px 2px 2px rgb(131, 124, 124);
+}

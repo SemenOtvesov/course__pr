@@ -31,12 +31,8 @@ function createLoader(load){
 function jsLoaders(){
     const loaders = [{
         loader: 'babel-loader',
-        options: {presets: ['@babel/preset-env']}
+        options: {presets: ['@babel/preset-env']},
     }]
-
-    if(isDev){
-        loaders.push('eslint-loader')
-    }
     return loaders
 }
 
@@ -45,6 +41,8 @@ module.exports = {
         alias: {
             '@js': path.resolve(__dirname, 'maket/js'),
             '@maket': path.resolve(__dirname, 'maket'),
+            '@core': path.resolve(__dirname, 'maket/core'),
+            '@components': path.resolve(__dirname, 'maket/components'),
         }
     },
     entry:'@js/script.js',
