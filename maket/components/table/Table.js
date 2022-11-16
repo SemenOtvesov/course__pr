@@ -20,7 +20,7 @@ export class Table extends ExelComponetn{
                 </div>${this.createRows(quantityRows, quantityCol)}`
     }
     createRows(quantityRows, quantityCol){
-        let stringRow = ''
+        let stringRow = '' 
         let stringCol = ''
         for(let i = 0; i< quantityCol; i++){
             stringCol = `${stringCol} <div class="table__row-item"></div>`
