@@ -73,6 +73,7 @@ export class Table extends ExelComponetn{
         const startpos = Math.round(target.parentElement.getBoundingClientRect().top);
 
         const positionSeparator = event.pageY - startpos
+        if(positionSeparator<40){positionSeparator = 40}
         target.style.cssText = `top: ${positionSeparator-4 +'px'}`
 
         this.SeparatorY = target
@@ -97,12 +98,16 @@ export class Table extends ExelComponetn{
         if(this.widthSeparatorX){
             const colList = this.$el.querySelectorAll(`[data-col="${this.SeparatorX.parentElement.dataset.col}"`) 
             colList.forEach(el=>{el.style.cssText = `flex: 0 0 ${this.widthSeparatorX+4+'px'}`})
-            this.SeparatorX.style.cssText = 'left: 86%'
+            if(this.widthSeparatorX === 40){
+                this.SeparatorX.style.cssText = 'left: 86%'
+            }
         }
         if(this.widthSeparatorY){
             console.log(this.SeparatorY.parentElement, this.widthSeparatorY)
             this.SeparatorY.parentElement.style.cssText = `height: ${this.widthSeparatorY+'px'}`
-            this.SeparatorY.style.cssText = 'top: 88%'
+            if(this.widthSeparatorY === 40){
+                this.SeparatorY.style.cssText = 'top: 88%'
+            }
         }
 
         document.removeEventListener('mousemove', this.removeFunctionTableX)
