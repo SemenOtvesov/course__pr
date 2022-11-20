@@ -1,8 +1,11 @@
 import {ExelComponetn} from '@core/ExelComponetn.js'
 export class File extends ExelComponetn{
     static class = ['main__file-box'];
-    constructor($el){
-        super($el = $el.$el)
+    constructor(el){
+        super(el, {
+            name: 'table', 
+            listeners: []
+        })
     }
     toHTML(){
         return `<input type="text" value="Новая таблица" class="main__file-name">

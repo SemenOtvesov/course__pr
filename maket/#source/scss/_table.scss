@@ -10,8 +10,12 @@
   &__fx-title {
     border-left: 1px solid #000;
     border-right: 1px solid #000;
-    text-align: center;
-    width: 30px;
+    width: 40px;
+    position: relative;
+    padding: 10px;
+    background-color: rgb(228, 227, 227);
+
+    display: flex;align-items: center;justify-content: center;
   }
 
   &__fx-input {
@@ -25,18 +29,72 @@
       border-left: 1px solid #000;
       border-right: 1px solid #000;
       display: flex; align-items: center; justify-content: center; 
-      padding: 5px;
     }
   }
 
   &__row-title {
     flex: 0 0 2.25%;
+    padding: 10px;
+    position: relative;
+    background-color: rgb(228, 227, 227);
   }
 
   &__row-item {
     flex: 0 0 2.25%;
+    padding: 10px;
   }
   & > div{
     border: 1px solid #000;
   }
+  &__column-separator{
+    position:absolute;
+    top: 0; left: 92.5%;
+    transform: translate(50%);
+    height: 100%; padding: 2px;
+    border-radius: 10px;
+    cursor: col-resize;
+    z-index: 2;
+
+    display: flex;
+    justify-content: center;
+    &:hover{
+      background-color: rgb(95, 187, 240);
+      .separator-line__column{
+        background-color: rgb(95, 187, 240);
+      }
+    }
+  }
+
+
+  &__row-separator{
+    position:absolute;
+    bottom: 0; left: 0;
+    width: 100%; padding: 2px;
+    border-radius: 10px;
+    transform: translate(0, 50%);
+    cursor: row-resize;
+    z-index: 2;
+
+    &:hover{
+      background-color: rgb(95, 187, 240);
+      .separator-line__row{
+        background-color: rgb(95, 187, 240);
+      }
+    }
+  }
+}
+.separator-line__column{
+  pointer-events: none;
+  width: 4px;
+}
+
+.separator-line__row{
+  pointer-events: none;
+  height: 4px;
+  width: 250vw;
+}
+
+// ЗАПРЕЩАЕМ ВЫДЕЛЕНИЕ НА ВСЁ СТРАНИЦЕ(ТЕКСТ)
+.copy-none{
+  user-select: none;
 }
