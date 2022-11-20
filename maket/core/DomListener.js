@@ -1,12 +1,23 @@
+import { capitalize } from "./utils";
+
 export class DomListener{
-    constructor($el){
-        this.$el = $el
+    constructor(el, listeners, targetTable = ''){
+        this.$el = el.$el
+        this.listners = listeners
     }
-    //возвращает шаблон элемента
-    on(typeListener, element, callBackFunc){
-        element.addEventListener(typeListener, callBackFunc)
+
+    initDomListeners(){
+        this.listners.forEach(element => {
+            const func = this['on' + capitalize(element)]
+            if(!func){throw new Error(`ошибка -- в ${this.name}(нет функции)`) }
+            this.$el.addEventListener(element, func.bind(this))
+        });
     }
-    off(typeListener, element, callBackFunc){
-        element.removeEventListener(typeListener, callBackFunc)
+    removeDomListeners(){
+        this.listners.forEach(element => {
+            const func = this['off' + capitalize(element)]
+            if(!func){throw new Error(`ошибка -- в ${this.name}(нет функции)`) }
+            this.$el.removeEventListener(element, func.bind(func))
+        });
     }
 }

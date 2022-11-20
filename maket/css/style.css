@@ -224,8 +224,13 @@ h1, h2, h3, h4, h5, h6 {
 .table__fx-title {
   border-left: 1px solid #000;
   border-right: 1px solid #000;
-  text-align: center;
-  width: 30px;
+  width: 40px;
+  position: relative;
+  padding: 10px;
+  background-color: rgb(228, 227, 227);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .table__row-box {
   display: flex;
@@ -238,14 +243,71 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px;
 }
 .table__row-title {
   flex: 0 0 2.25%;
+  padding: 10px;
+  position: relative;
+  background-color: rgb(228, 227, 227);
 }
 .table__row-item {
   flex: 0 0 2.25%;
+  padding: 10px;
 }
 .table > div {
   border: 1px solid #000;
+}
+.table__column-separator {
+  position: absolute;
+  top: 0;
+  left: 92.5%;
+  transform: translate(50%);
+  height: 100%;
+  padding: 2px;
+  border-radius: 10px;
+  cursor: col-resize;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+}
+.table__column-separator:hover {
+  background-color: rgb(95, 187, 240);
+}
+.table__column-separator:hover .separator-line__column {
+  background-color: rgb(95, 187, 240);
+}
+.table__row-separator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 2px;
+  border-radius: 10px;
+  transform: translate(0, 50%);
+  cursor: row-resize;
+  z-index: 2;
+}
+.table__row-separator:hover {
+  background-color: rgb(95, 187, 240);
+}
+.table__row-separator:hover .separator-line__row {
+  background-color: rgb(95, 187, 240);
+}
+
+.separator-line__column {
+  pointer-events: none;
+  width: 4px;
+}
+
+.separator-line__row {
+  pointer-events: none;
+  height: 4px;
+  width: 250vw;
+}
+
+.copy-none {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }

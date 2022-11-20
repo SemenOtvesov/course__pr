@@ -2,6 +2,12 @@ import {ExelComponetn} from '@core/ExelComponetn.js'
 export class Editing extends ExelComponetn{
     static class = ['main__editing-box']
 
+    constructor(el){
+        super(el, {
+            name: 'table', 
+            listeners: []
+        })
+    }
     toHTML(){
         return `<div class="main__editing-item">
         <img src="./icon/align-left.png" alt="">
