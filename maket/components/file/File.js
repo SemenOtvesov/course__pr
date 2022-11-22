@@ -1,10 +1,11 @@
 import {ExelComponetn} from '@core/ExelComponetn.js'
 export class File extends ExelComponetn{
     static class = ['main__file-box'];
-    constructor(el){
+    constructor(el, emit){
         super(el, {
             name: 'table', 
-            listeners: []
+            listeners: [],
+            emitter: emit
         })
     }
     toHTML(){
