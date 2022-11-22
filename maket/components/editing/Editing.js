@@ -2,10 +2,11 @@ import {ExelComponetn} from '@core/ExelComponetn.js'
 export class Editing extends ExelComponetn{
     static class = ['main__editing-box']
 
-    constructor(el){
+    constructor(el, emit){
         super(el, {
             name: 'table', 
-            listeners: []
+            listeners: [],
+            emitter: emit
         })
     }
     toHTML(){

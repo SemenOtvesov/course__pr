@@ -19,6 +19,7 @@
   }
 
   &__fx-input {
+    width: 100%;
   }
 
   &__row-box {
@@ -39,9 +40,24 @@
     background-color: rgb(228, 227, 227);
   }
 
+  &__row-textarea{
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    resize: none;
+    overflow: hidden;
+  }
+
   &__row-item {
     flex: 0 0 2.25%;
-    padding: 10px;
+    padding: 2px;
+    height: 100%;
+    border: 1px solid #fff;
+    &.selected{
+      z-index: 2;
+      border: 1px solid $mainBlue;
+      outline: 2px solid $mainBlue;
+    }
   }
   & > div{
     border: 1px solid #000;
@@ -58,9 +74,9 @@
     display: flex;
     justify-content: center;
     &:hover{
-      background-color: rgb(95, 187, 240);
+      background-color: $mainBlue;
       .separator-line__column{
-        background-color: rgb(95, 187, 240);
+        background-color: $mainBlue;
       }
     }
   }
@@ -68,17 +84,18 @@
 
   &__row-separator{
     position:absolute;
-    bottom: 0; left: 0;
+    top: 80%; left: 0;
     width: 100%; padding: 2px;
     border-radius: 10px;
     transform: translate(0, 50%);
     cursor: row-resize;
-    z-index: 2;
+    z-index: 1000;
+    
 
     &:hover{
-      background-color: rgb(95, 187, 240);
+      background-color: $mainBlue;
       .separator-line__row{
-        background-color: rgb(95, 187, 240);
+        background-color: $mainBlue;
       }
     }
   }
