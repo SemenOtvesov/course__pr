@@ -1,13 +1,21 @@
-export class TableSection{
+import { ExelComponetn } from "@core/ExelComponetn"
+import { createStore } from "@core/createStore";
+import { rootReduser } from '@maket/rootReduser/rootReduser'
+
+export class TableSection {
     constructor(table){
         this.sections = []
         this.oldElem = null
         this.table = table
+        this.createStore = createStore(rootReduser)
+        this.createStore.subscribe(state=>localStorage.setItem('state', JSON.stringify(state)))
     }
 
     select($el){
         const input =  this.table.querySelector('#fxInput')
-        input.value = $el.firstElementChild.value
+        if($el.dataset.content){
+            input.value = $el.dataset.content
+        }else{input.value = $el.firstElementChild.value}
         
         this.sections.forEach(el=>el.classList.remove('selected'))
         this.sections = []
@@ -16,10 +24,27 @@ export class TableSection{
             this.sections.push($el)
         }
 
-        this.oldElem = $el
         $el.classList.add('selected')
-
         $el.firstElementChild.focus()
+
+        const state = JSON.parse(localStorage.getItem('state')) || {}
+        const editButtons = document.querySelectorAll('[data-edit]')
+        editButtons.forEach(el=>el.classList.remove('active'))
+        
+        if(state.hasOwnProperty('exStateEdit')){
+            const stateSelectEl = state.exStateEdit.find(el=>$el.dataset.id === el.exId)
+            if(stateSelectEl){
+                for(const key in stateSelectEl){
+                    editButtons.forEach(el=>{
+                        if(el.dataset.edit === stateSelectEl[key]){el.classList.add('active')}
+                    })
+                }
+            }
+        }
+
+        this.createStore.dispatch(state, {type:'resSelectEl', data:$el.dataset.id})
+
+        this.oldElem = $el
     }
 
     selectGroup($el, table){
@@ -46,7 +71,9 @@ export class TableSection{
             if((+elCol >= +gapStartCol)&&(+elCol <= +gapEndCol)){
                 if((+elRow >= +gapStartRow)&&(+elRow <= +gapEndRow)){
                     el.classList.add('selected')
-                    this.sections.push(el)
+                    if(this.sections.find(element=>element.dataset.id !== el.dataset.id)){
+                        this.sections.push(el)
+                    }
                 }
             }
         })

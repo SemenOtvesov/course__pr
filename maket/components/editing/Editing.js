@@ -2,31 +2,96 @@ import {ExelComponetn} from '@core/ExelComponetn.js'
 export class Editing extends ExelComponetn{
     static class = ['main__editing-box']
 
-    constructor(el, emit){
+    constructor(el, emit, store){
         super(el, {
             name: 'table', 
-            listeners: [],
-            emitter: emit
+            listeners: ['click'],
+            emitter: emit,
+            store
         })
     }
     toHTML(){
-        return `<div class="main__editing-item">
+        return `
+    <div data-edit="left" class="main__editing-item">
         <img src="./icon/align-left.png" alt="">
     </div>
-    <div class="main__editing-item">
+    <div data-edit="center" class="main__editing-item">
         <img src="./icon/align-center.png" alt="">
     </div>
-    <div class="main__editing-item">
+    <div data-edit="right" class="main__editing-item">
         <img src="./icon/align-right.png" alt="">
     </div>
-    <div class="main__editing-item">
+    <div data-edit="bold" class="main__editing-item">
         <img src="./icon/bold.png" alt="">
     </div>
-    <div class="main__editing-item">
+    <div data-edit="italic" class="main__editing-item">
         <img src="./icon/italic.png" alt="">
     </div>
-    <div class="main__editing-item">
+    <div data-edit="underLine" class="main__editing-item">
         <img src="./icon/underline.png" alt="">
-    </div>`
+    </div>
+    `
+    }
+
+    onClick(event){
+        const target = event.target;
+        const parentTarget = target.parentElement
+
+        if(parentTarget.dataset.edit){
+            const state = JSON.parse(localStorage.getItem('state'))
+            const $exElems = document.querySelectorAll('.selected')
+
+            const edit = parentTarget.dataset.edit
+
+            const exs = [], delExs = []
+            $exElems.forEach(el=>{
+                if((edit==='left')||(edit==='center')||(edit==='right')){
+                    exs.push({exId: el.dataset.id, posType: edit})
+                    delExs.push({exId: el.dataset.id, deleteElement: parentTarget.dataset.edit+'Type'})
+                }
+                if(edit === 'bold'){
+                    exs.push({exId: el.dataset.id, boldType: edit})
+                    delExs.push({exId: el.dataset.id, deleteElement: parentTarget.dataset.edit+'Type'})
+                }
+                if(edit === 'italic'){
+                    exs.push({exId: el.dataset.id, italicType: edit})
+                    delExs.push({exId: el.dataset.id, deleteElement: parentTarget.dataset.edit+'Type'})
+                }
+                if(edit === 'underLine'){
+                    exs.push({exId: el.dataset.id, underLineType: edit})
+                    delExs.push({exId: el.dataset.id, deleteElement: parentTarget.dataset.edit+'Type'})
+                }
+            })
+
+            if(state.exStateEdit){
+                this.$emit('editDel', parentTarget.dataset.edit)
+                const delBol = state.exStateEdit.reduce((item,elem) => {
+                    const delEl = delExs.find(delEl=>(delEl.exId === elem.exId)&&(elem[delEl.deleteElement]))
+                    if(delEl){return item = true}
+                    return item
+                }, false)
+                if(delBol){
+                    this.dispatch({type:'deleteEditEl', data:delExs})
+                }else{
+                    this.$emit('edit', parentTarget.dataset.edit)
+                    if((edit==='left')||(edit==='center')||(edit==='right')){
+                        this.dispatch({type:'exStateEdit', data:exs})
+                        const editButtons = document.querySelectorAll('[data-edit]')
+                        editButtons.forEach(el=>{
+                            const elEdit = el.dataset.edit
+                            if((elEdit==='left')||(elEdit==='center')||(elEdit==='right')){el.classList.remove('active')}
+                        })
+                        parentTarget.classList.add('active')
+                    }else{
+                        this.dispatch({type:'exStateEdit', data:exs})
+                        parentTarget.classList.toggle('active')
+                    }
+                }
+            }else{
+                this.$emit('edit', parentTarget.dataset.edit)
+                this.dispatch({type:'exStateEdit', data:exs})
+                parentTarget.classList.toggle('active')
+            }
+        }
     }
 }

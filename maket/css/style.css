@@ -203,19 +203,26 @@ h1, h2, h3, h4, h5, h6 {
   gap: 5px;
 }
 .main__editing-box img {
+  padding: 5px;
   height: 100%;
 }
 .main__editing-item {
   transition: 0.3s;
-  padding: 5px;
 }
 .main__editing-item:hover {
+  background-color: rgb(216, 215, 215);
+  border-radius: 50%;
+}
+.main__editing-item.active {
   background-color: rgb(216, 215, 215);
 }
 
 .table {
   font-size: 20px;
-  overflow-x: auto;
+  overflow: hidden;
+  overflow-x: visible;
+  border: 1px solid #000;
+  margin: 0 1px;
 }
 .table__fx-box {
   display: flex;
@@ -260,6 +267,24 @@ h1, h2, h3, h4, h5, h6 {
   resize: none;
   overflow: hidden;
 }
+.table__row-textarea.right {
+  text-align: right;
+}
+.table__row-textarea.center {
+  text-align: center;
+}
+.table__row-textarea.left {
+  text-align: left;
+}
+.table__row-textarea.italic {
+  font-style: italic;
+}
+.table__row-textarea.bold {
+  font-weight: 700;
+}
+.table__row-textarea.underLine {
+  text-decoration: underline;
+}
 .table__row-item {
   flex: 0 0 2.25%;
   padding: 2px;
@@ -283,7 +308,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 2px;
   border-radius: 10px;
   cursor: col-resize;
-  z-index: 2;
+  z-index: 1000;
   display: flex;
   justify-content: center;
 }

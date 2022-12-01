@@ -1,7 +1,7 @@
 import { capitalize } from "./utils";
 
 export class DomListener{
-    constructor(el, listeners, targetTable = ''){
+    constructor(el, listeners){
         this.$el = el.$el
         this.listners = listeners
     }
