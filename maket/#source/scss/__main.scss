@@ -101,15 +101,17 @@
     padding: 10px;
     gap: 5px;
     & img{
+      padding: 5px;
       height: 100%;
     }
   }
 
   &__editing-item {
     transition: 0.3s;
-    padding: 5px;
     &:hover{
       background-color: rgb(216, 215, 215);
+      border-radius: 50%;
     }
+    &.active{background-color: rgb(216, 215, 215);}
   }
 }

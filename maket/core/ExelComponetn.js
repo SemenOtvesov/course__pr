@@ -1,4 +1,5 @@
 import { DomListener } from './DomListener.js'
+import { TableSection } from '@components/table/TableSection.js'
 
 export class ExelComponetn extends DomListener{
     constructor(el, option){
@@ -8,6 +9,9 @@ export class ExelComponetn extends DomListener{
         this.prepare()
         this.emitter = option.emitter
         this.unSubs = []
+
+        this.store = option.store
+        
     }
 
     prepare(){
@@ -18,9 +22,18 @@ export class ExelComponetn extends DomListener{
         this.emitter.emit(event, arg)
     }
 
-    $subscrube(event, fn){
+    $on(event, fn){
         const unSub = this.emitter.subscrube(event, fn)
         this.unSubs.push(unSub)
+    }
+
+    dispatch(action){
+        const state = JSON.parse(localStorage.getItem('state'))
+        this.store.dispatch(state==null ? {}: state, action)
+    }
+
+    subscrube(fn){
+        this.storeSub = this.store.subscribe(fn)
     }
 
     init(){
@@ -29,5 +42,6 @@ export class ExelComponetn extends DomListener{
 
     destroy(){
         this.unSubs.forEach(el=>el())
+        this.storeSub()
     }
 }

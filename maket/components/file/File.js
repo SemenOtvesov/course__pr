@@ -1,15 +1,20 @@
 import {ExelComponetn} from '@core/ExelComponetn.js'
 export class File extends ExelComponetn{
     static class = ['main__file-box'];
-    constructor(el, emit){
+    constructor(el, emit, store){
         super(el, {
             name: 'table', 
-            listeners: [],
-            emitter: emit
+            listeners: ['input'],
+            emitter: emit,
+            store
         })
     }
     toHTML(){
-        return `<input type="text" value="Новая таблица" class="main__file-name">
+        const state = JSON.parse(localStorage.getItem('state')) || {}
+        let titileValue
+        if(state.resTableTitle){titileValue = state.resTableTitle}
+
+        return `<input type="text" value="${titileValue || 'Новая таблица'}" class="main__file-name">
         <div class="main__file-del/exBox">
             <button class="main__file-delete">
                 <img src="./icon/trash.png" alt="">
@@ -19,8 +24,8 @@ export class File extends ExelComponetn{
             </button>
         </div>`
     }
-}
 
-function nice(){
-    console.log('remove',this.$el)
+    onInput(event){
+        this.dispatch({type:'resTableTitle', data: event.target.value})
+    }
 }

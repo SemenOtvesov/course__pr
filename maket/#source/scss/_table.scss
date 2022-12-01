@@ -1,6 +1,9 @@
 .table {
   font-size: 20px;
-  overflow-x: auto;
+  overflow: hidden;
+  overflow-x: visible;
+  border: 1px solid #000;
+  margin: 0 1px;
 
   &__fx-box {
     display: flex;
@@ -46,6 +49,12 @@
     font-size: 20px;
     resize: none;
     overflow: hidden;
+    &.right{text-align: right;}
+    &.center{text-align: center;}
+    &.left{text-align: left;}
+    &.italic{font-style: italic;}
+    &.bold{font-weight: 700;}
+    &.underLine{text-decoration: underline;}
   }
 
   &__row-item {
@@ -69,7 +78,7 @@
     height: 100%; padding: 2px;
     border-radius: 10px;
     cursor: col-resize;
-    z-index: 2;
+    z-index: 1000;
 
     display: flex;
     justify-content: center;
