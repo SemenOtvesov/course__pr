@@ -2,12 +2,13 @@ import {ExelComponetn} from '@core/ExelComponetn.js'
 export class Editing extends ExelComponetn{
     static class = ['main__editing-box']
 
-    constructor(el, emit, store){
+    constructor(el, emit, store, excelId){
         super(el, {
             name: 'table', 
             listeners: ['click'],
             emitter: emit,
-            store
+            store,
+            excelId
         })
     }
     toHTML(){
@@ -38,7 +39,8 @@ export class Editing extends ExelComponetn{
         const parentTarget = target.parentElement
 
         if(parentTarget.dataset.edit){
-            const state = JSON.parse(localStorage.getItem('state'))
+            let state = JSON.parse(localStorage.getItem('state')) || {}
+            if(this.excelId){state = state[this.excelId]}
             const $exElems = document.querySelectorAll('.selected')
 
             const edit = parentTarget.dataset.edit
@@ -62,7 +64,7 @@ export class Editing extends ExelComponetn{
                     delExs.push({exId: el.dataset.id, deleteElement: parentTarget.dataset.edit+'Type'})
                 }
             })
-
+            
             if(state.exStateEdit){
                 this.$emit('editDel', parentTarget.dataset.edit)
                 const delBol = state.exStateEdit.reduce((item,elem) => {

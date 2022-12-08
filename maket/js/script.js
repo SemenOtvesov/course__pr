@@ -1,18 +1,9 @@
 import '@maket/css/style.css'
-import { Excel } from '@components/excel/Excel'
-import { Editing } from '@components/editing/Editing'
-import { Table } from '@components/table/Table'
-import { File } from '@components/file/File'
-import {ExelComponetn} from '@core/ExelComponetn.js'
+import { Routing } from '@core/routing/Routing'
+import { GreetingRoot } from '@core/routs/GreetingRoot'
+import { ExcelRoot } from '@core/routs/ExcelRoot'
 
-import { createStore } from '@core/createStore'
-import { rootReduser } from '@maket/rootReduser/rootReduser'
-
-const store = createStore(rootReduser)
-
-const excel = new Excel('#wrap', {
-    components: [File, Editing, Table],
-    store
+const routing = new Routing('#wrap', {
+    greeting: GreetingRoot,
+    excel: ExcelRoot
 })
-
-excel.render()

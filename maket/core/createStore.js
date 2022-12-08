@@ -10,8 +10,9 @@ export function createStore(rootReduser, initState = {}){
             return ()=>{listeners=listeners.filter(el=>el !== fn)}
         },
 
-        dispatch: (state, action)=>{
-            state = rootReduser(state, action)
+        dispatch: (state, action, excelId)=>{
+            state = rootReduser(state, action, excelId)
+
             listeners.forEach(listener=>listener(state))
         },
 

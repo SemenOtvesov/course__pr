@@ -15,9 +15,8 @@ export class DomListener{
     }
     removeDomListeners(){
         this.listners.forEach(element => {
-            const func = this['off' + capitalize(element)]
-            if(!func){throw new Error(`ошибка -- в ${this.name}(нет функции)`) }
-            this.$el.removeEventListener(element, func.bind(func))
+            const func = this['on' + capitalize(element)]
+            this.$el.removeEventListener(element, func.bind(this))
         });
     }
 }

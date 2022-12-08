@@ -11,7 +11,7 @@ export class TableSection {
         this.createStore.subscribe(state=>localStorage.setItem('state', JSON.stringify(state)))
     }
 
-    select($el){
+    select($el, excelId){
         const input =  this.table.querySelector('#fxInput')
         if($el.dataset.content){
             input.value = $el.dataset.content
@@ -27,10 +27,13 @@ export class TableSection {
         $el.classList.add('selected')
         $el.firstElementChild.focus()
 
-        const state = JSON.parse(localStorage.getItem('state')) || {}
+        const mainState = JSON.parse(localStorage.getItem('state')) || {}
+        let state = mainState
+        if(state.hasOwnProperty(excelId)){state = state[excelId]}
+
         const editButtons = document.querySelectorAll('[data-edit]')
         editButtons.forEach(el=>el.classList.remove('active'))
-        
+
         if(state.hasOwnProperty('exStateEdit')){
             const stateSelectEl = state.exStateEdit.find(el=>$el.dataset.id === el.exId)
             if(stateSelectEl){
@@ -42,7 +45,7 @@ export class TableSection {
             }
         }
 
-        this.createStore.dispatch(state, {type:'resSelectEl', data:$el.dataset.id})
+        this.createStore.dispatch(mainState, {type:'resSelectEl', data:$el.dataset.id}, excelId)
 
         this.oldElem = $el
     }
