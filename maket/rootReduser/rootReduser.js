@@ -1,34 +1,39 @@
-export function rootReduser(state, action){
+export function rootReduser(state, action, excelId){
+    let idExcelEl;
+    if(!state[excelId]){
+        idExcelEl = state[excelId] = {}
+    }else{
+        idExcelEl = state[excelId]
+    }
     if(action.type === 'colResize'){
-        if(!state.colResize){
-            state.colResize = [action.data]
+        if(!idExcelEl.hasOwnProperty('colResize')){
+            idExcelEl.colResize = [action.data]
         }else{
-            const checkNumCol = state.colResize.find(element=>action.data.exId === element.exId)
-
+            const checkNumCol = idExcelEl.colResize.find(element=>action.data === element.exId)
             if(checkNumCol){
                 checkNumCol.widthCol = action.data.widthCol
-            }else{state.colResize.push(action.data)}
+            }else{idExcelEl.colResize.push(action.data)}
         }
     }
 
     if(action.type === 'rowResize'){
-        if(!state.rowResize){
-            state.rowResize = [action.data]
+        if(!idExcelEl.hasOwnProperty('rowResize')){
+            idExcelEl.rowResize = [action.data]
         }else{
-            const checkNumCol = state.rowResize.find(element=>action.data.exId === element.exId)
+            const checkNumCol = idExcelEl.rowResize.find(element=>action.data === element.exId)
 
             if(checkNumCol){
                 checkNumCol.widthRow = action.data.widthRow
-            }else{state.rowResize.push(action.data)}
+            }else{idExcelEl.rowResize.push(action.data)}
         }
     }
 
     if(action.type === 'exStateValue'){
-        if(!state.exStateValue){
-            state.exStateValue = action.data
+        if(!idExcelEl.hasOwnProperty('exStateValue')){
+            idExcelEl.exStateValue = action.data
         }else{
             action.data.forEach(element => {
-                const checkExId = state.exStateValue.find(ex=>element.exId === ex.exId)
+                const checkExId = idExcelEl.exStateValue.find(ex=>element.exId === ex.exId)
 
                 if(checkExId){
                     if(element.value[0] === '='){
@@ -42,19 +47,18 @@ export function rootReduser(state, action){
                         checkExId.value = element.value
                     }
                 }else{
-                    state.exStateValue.push(element)
+                    idExcelEl.exStateValue.push(element)
                 }
             });
         }
     }
 
     if(action.type === 'exStateEdit'){
-        console.log(action)
-        if(!state.exStateEdit){
-            state.exStateEdit = action.data
+        if(!idExcelEl.hasOwnProperty('exStateEdit')){
+            idExcelEl.exStateEdit = action.data
         }else{
             action.data.forEach(element=>{
-                const checkStateEdit = state.exStateEdit.find(ex=>element.exId === ex.exId)
+                const checkStateEdit = idExcelEl.exStateEdit.find(ex=>element.exId === ex.exId)
 
                 if(checkStateEdit){
                     if(element.posType){checkStateEdit.posType = element.posType}
@@ -63,15 +67,14 @@ export function rootReduser(state, action){
                     if(element.italicType){checkStateEdit.italicType = element.italicType}
                     if(element.underLineType){checkStateEdit.underLineType = element.underLineType}
 
-                }else{state.exStateEdit.push(element)}
+                }else{idExcelEl.exStateEdit.push(element)}
             })
         }
     }
 
     if(action.type === 'deleteEditEl'){
-        console.log(action.data)
         action.data.forEach(element=>{
-            const checkStateEdit = state.exStateEdit.find(ex=>element.exId === ex.exId)
+            const checkStateEdit = idExcelEl.exStateEdit.find(ex=>element.exId === ex.exId)
 
             if(checkStateEdit){
                 delete checkStateEdit[element.deleteElement]
@@ -80,11 +83,11 @@ export function rootReduser(state, action){
     }
 
     if(action.type === 'resSelectEl'){
-        state.resSelectEl = action.data
+        idExcelEl.resSelectEl = action.data
     }
     
     if(action.type === 'resTableTitle'){
-        state.resTableTitle = action.data
+        idExcelEl.resTableTitle = action.data
     }
 
     return state

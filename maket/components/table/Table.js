@@ -4,12 +4,13 @@ import { debounce } from '@core/utils'
 import { TableSection } from './TableSection'
 export class Table extends ExelComponetn{
     static class = ['main__fx-table', 'table']
-    constructor(el, emit, store){
+    constructor(el, emit, store, excelId){
         super(el, {
             name: 'table', 
             listeners: ['mousedown', 'mouseup', 'keydown', 'input'],
             emitter: emit,
-            store   
+            store, 
+            excelId  
         })
     }
 
@@ -18,8 +19,8 @@ export class Table extends ExelComponetn{
         const engAlp = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
         let stringCol = ''
 
-        const resizeStorage = JSON.parse(localStorage.getItem('state'))
-
+        let resizeStorage = JSON.parse(localStorage.getItem('state')) || {}
+        if(resizeStorage.hasOwnProperty(this.excelId)){resizeStorage = resizeStorage[this.excelId]}
         for(let i = 1; i< quantityCol; i++){
             let alpI = i; if(i > 26){alpI = i-26};
 
@@ -56,7 +57,8 @@ export class Table extends ExelComponetn{
 
     createRows(quantityRows, quantityCol){
         let stringRow = '' 
-        const resizeStorage = JSON.parse(localStorage.getItem('state'))
+        let resizeStorage = JSON.parse(localStorage.getItem('state')) || {}
+        if(resizeStorage.hasOwnProperty(this.excelId)){resizeStorage = resizeStorage[this.excelId]}
 
         const stringCol = (indexRow)=>{
             let string = ''
@@ -64,7 +66,7 @@ export class Table extends ExelComponetn{
             for(let i = 0; i< quantityCol; i++){
                 let resizeColWidth
                 let exContent, exInputContent
-                let exEditPos, exEditBold, exEditCursive, exEditUnderline
+                let exEditPos, exEditBold, exEditCursive, exEditUnderline;
 
                 if(resizeStorage){
                     if(resizeStorage.hasOwnProperty('colResize')){
@@ -93,6 +95,7 @@ export class Table extends ExelComponetn{
                         })
                     }
                 }
+
                 string = `${string} <div data-col="${i+1}" data-id="${indexRow+1}:${i+1}" 
                 class="table__row-item" style="flex: 0 0 ${resizeColWidth || 93}px" ${exInputContent ? 
                     `data-content="${exInputContent}"` : ''}> 
@@ -102,6 +105,7 @@ export class Table extends ExelComponetn{
                 >${exContent||''}</textarea></div>`
             }
             return string
+
         }
         for(let i = 0; i<quantityRows; i++){
             let resizeRowWidth
@@ -168,9 +172,9 @@ export class Table extends ExelComponetn{
         }else if((event.ctrlKey)&&(target.parentElement.dataset.id)){
             this.Sections.selectGroup(target.parentElement, this.$el)
         }else if(target.dataset.id){
-            this.Sections.select(target)
+            this.Sections.select(target, this.excelId)
         }else if(target.parentElement.dataset.id){
-            this.Sections.select(target.parentElement)
+            this.Sections.select(target.parentElement, this.excelId)
         }
     }
 
@@ -210,7 +214,7 @@ export class Table extends ExelComponetn{
 
         cells.forEach(el=>{
             if(el.dataset.id === `${+row + paramRow}:${+col + paramCol}`){
-                this.Sections.select(el)
+                this.Sections.select(el, this.excelId)
             }
         })
     }
@@ -222,7 +226,7 @@ export class Table extends ExelComponetn{
         if((target.dataset.id)||(target.parentElement.dataset.id)){
             if(event.code === 'Tab'){
                 event.preventDefault()
-                this.Sections.select(event.target.parentElement.nextElementSibling)
+                this.Sections.select(event.target.parentElement.nextElementSibling, this.excelId)
             }
     
             if((event.code === 'Enter')&&(!event.shiftKey)){this.#keydownFn(cells, {paramRow:1, paramCol: 0})}
@@ -264,16 +268,15 @@ export class Table extends ExelComponetn{
     }
 
     init(){
+        super.init()
+
         const state = JSON.parse(localStorage.getItem('state')) || {}
         let ex
         if(state.resSelectEl){ex = state.resSelectEl}else{ex = '1:1'}
         let section = this.$el.querySelector(`[data-id="${ex}"]`)
-        this.Sections.select(section)
-
-        super.init()
+        this.Sections.select(section, this.excelId)
 
         this.$on('fxInput', (el)=>this.Sections.selected().forEach(selectEl=>{
-            console.log(el)
             if(el[0] === '='){
                 const fn = el.slice(1)
                 const rez = eval(fn)
@@ -282,9 +285,11 @@ export class Table extends ExelComponetn{
         }))
         this.$on('textareaInput', (el)=>this.$el.querySelector('#fxInput').value = el)
 
-        const resState = debounce(state => localStorage.setItem('state', JSON.stringify(state)), 300)
+        function resState(){
+            return debounce(state => localStorage.setItem('state', JSON.stringify(state)), 300)
+        }
 
-        this.subscrube(state => resState(state))
+        this.subscrube(resState())
 
         this.$on('edit', (buttonType)=>{
             this.Sections.selected().forEach(selectEl=>{

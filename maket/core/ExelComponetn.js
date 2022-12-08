@@ -9,9 +9,10 @@ export class ExelComponetn extends DomListener{
         this.prepare()
         this.emitter = option.emitter
         this.unSubs = []
+        this.storeSub = []
 
         this.store = option.store
-        
+        this.excelId = option.excelId
     }
 
     prepare(){
@@ -29,11 +30,11 @@ export class ExelComponetn extends DomListener{
 
     dispatch(action){
         const state = JSON.parse(localStorage.getItem('state'))
-        this.store.dispatch(state==null ? {}: state, action)
+        this.store.dispatch(state==null ? {}: state, action, this.excelId)
     }
 
     subscrube(fn){
-        this.storeSub = this.store.subscribe(fn)
+        return this.storeSub = this.store.subscribe(fn)
     }
 
     init(){
@@ -41,7 +42,8 @@ export class ExelComponetn extends DomListener{
     }
 
     destroy(){
+        this.removeDomListeners()
         this.unSubs.forEach(el=>el())
-        this.storeSub()
+        this.storeSub = ''
     }
 }

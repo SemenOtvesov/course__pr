@@ -7,27 +7,34 @@ export class Excel{
         this.components = options.components;
         this.store = options.store
         this.Emitter = new Emitter()
+
+        this.extends = []
     }
 
-    render(){
+    render(parent, excelId){
+        this.extends = []
+        parent.innerHTML = ''
         const emitter = this.Emitter
         const store = this.store
 
         let i = 0;
         this.components = this.components.map(Comp => {
             const el = $.create('div', Comp.class)
-            const comp = new Comp(el, emitter, store)
-            el.HTML(comp.toHTML()).append(this.$wrap).ajStyleSeparator()
+            const comp = new Comp(el, emitter, store, excelId)
+            el.HTML(comp.toHTML()).append(parent).ajStyleSeparator()
 
-            return comp
-        });
-
-        this.components.forEach(element => {
-            element.init()
+            this.extends.push(comp)
+            return Comp
         });
     }
 
+    init(){
+        this.extends.forEach(element => {
+            element.init()
+        })
+    }
+
     destroy(){
-        this.components.forEach(element => element.destroy());
+        this.extends.forEach(element => element.destroy());
     }
 }

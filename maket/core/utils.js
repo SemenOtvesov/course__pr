@@ -8,9 +8,9 @@ export function debounce(fn, time){
     return function(...args){
         const later = () =>{
             clearTimeout(timeout)
-            fn.apply(this, args)
+            return fn.apply(this, args)
         }
         clearTimeout(timeout)
-        timeout = setTimeout(later, time)
+        timeout = setTimeout(later(), time)
     }
 }

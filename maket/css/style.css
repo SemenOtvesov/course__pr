@@ -170,6 +170,13 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 20px;
   transition: 0.3s;
 }
+.main__listPrewiw-item a {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  color: #000;
+}
 .main__listPrewiw-item:hover {
   background-color: rgb(229, 247, 225);
 }
